@@ -1,7 +1,6 @@
 package registerController
 
 import (
-	"fmt"
 	"github.com/go-playground/locales/en"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
@@ -37,6 +36,7 @@ func (register RegisterController) Register(w http.ResponseWriter, r *http.Reque
 		Password:        r.PostForm.Get("password"),
 		ConfirmPassword: r.PostForm.Get("confirm_password"),
 	}
+
 	translator := en.New()
 	uni := ut.New(translator, translator)
 	trans, _ := uni.GetTranslator("en")
@@ -57,39 +57,39 @@ func (register RegisterController) Register(w http.ResponseWriter, r *http.Reque
 	})
 	validateErrors := validate.Struct(registerInput)
 	errorMessages := make(map[string]interface{})
+	// user- barlamak ucin
 	getUserEmail := userModel.GetUserEmail(registerInput.Email)
 	getUserUsername := userModel.GetUserUsername(registerInput.Username)
+
 	if validateErrors != nil {
 		for _, e := range validateErrors.(validator.ValidationErrors) {
 			errorMessages[e.StructField()] = e.Translate(trans)
-
 		}
-		fmt.Println(errorMessages)
+		//fmt.Println(errorMessages)
 		data := map[string]interface{}{
 			"validation": errorMessages,
 			"user":       registerInput,
 		}
 		view, _ := template.ParseFiles(helpers.Include("auth/register")...)
 		_ = view.ExecuteTemplate(w, "RegisterPage", data)
+		return
 	}
 
 	if getUserEmail || getUserUsername {
 		ErrorUserMessage := make(map[string]interface{})
 		if getUserEmail == true {
 			ErrorUserMessage["has_email"] = "Email salgysy eýýäm ulanylýar!!!"
-			//fmt.Println("user email ---->>>>", getUserEmail)
 		}
 		if getUserUsername == true {
 			ErrorUserMessage["has_username"] = "Username ady eýýäm ulanylýar!!!"
-			//fmt.Println("user Username --->>>>", getUserUsername)
 		}
 		data := map[string]interface{}{
 			"user_exists": ErrorUserMessage,
 			"user":        registerInput,
 		}
-		//log.Println(data)
 		view, _ := template.ParseFiles(helpers.Include("auth/register")...)
 		_ = view.ExecuteTemplate(w, "RegisterPage", data)
+		return
 	}
 
 	// username we email address user table-de yok bolsa register bolmak ucin
@@ -102,8 +102,11 @@ func (register RegisterController) Register(w http.ResponseWriter, r *http.Reque
 			Email:    registerInput.Email,
 			Password: string(hashPassword),
 		}.CreateUser()
+		data := map[string]interface{}{
+			"success": "Siz üsdünlikli hasaba alyndyňyz. Indi ulgama girip bilersiňiz!!!",
+		}
 		view, _ := template.ParseFiles(helpers.Include("auth/login")...)
-		_ = view.ExecuteTemplate(w, "LoginPage", nil)
+		_ = view.ExecuteTemplate(w, "LoginPage", data)
 	}
-
+	return
 }

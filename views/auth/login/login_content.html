@@ -8,6 +8,12 @@
                          class="img-fluid" alt="Auth Image">
                 </div>
                 <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                    {{if .success }}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{.success}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {{end}}
                     <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
                         <p class="lead fw-normal mb-0 me-3 mb-4" style="font-size: 28px;"><b>Login</b></p>
                     </div>

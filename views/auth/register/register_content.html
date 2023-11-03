@@ -47,7 +47,8 @@
                             {{end}}
                         </div>
                         <div class="form-outline mb-3">
-                            <input type="password" name="password" id="password" class="form-control form-control-md {{if .validation.Password }} is-invalid {{end}}"
+                            <input type="password" name="password" id="password" value="{{.user.Password}}"
+                                   class="form-control form-control-md {{if .validation.Password }} is-invalid {{end}}"
                                    placeholder="Password..."  />
                             {{if .validation.Password}}
                                 <span class="text-danger" style="margin-left: 1%;">{{.validation.Password}}</span>
@@ -55,7 +56,8 @@
                         </div>
                         <!-- Confirm password input -->
                         <div class="form-outline mb-3">
-                            <input type="password" name="confirm_password" id="confirm_password" class="form-control form-control-md {{if .validation.ConfirmPassword }} is-invalid {{end}}"
+                            <input type="password" name="confirm_password" value="{{.user.ConfirmPassword}}" id="confirm_password"
+                                   class="form-control form-control-md {{if .validation.ConfirmPassword }} is-invalid {{end}}"
                                    placeholder="Confirm Password..." />
                             {{if .validation.ConfirmPassword}}
                                 <span class="text-danger" style="margin-left: 1%;">{{.validation.ConfirmPassword}}</span>
