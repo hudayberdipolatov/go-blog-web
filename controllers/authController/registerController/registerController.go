@@ -57,9 +57,6 @@ func (register RegisterController) Register(w http.ResponseWriter, r *http.Reque
 	})
 	validateErrors := validate.Struct(registerInput)
 	errorMessages := make(map[string]interface{})
-	// user- barlamak ucin
-	getUserEmail := userModel.GetUserEmail(registerInput.Email)
-	getUserUsername := userModel.GetUserUsername(registerInput.Username)
 
 	if validateErrors != nil {
 		for _, e := range validateErrors.(validator.ValidationErrors) {
@@ -74,7 +71,9 @@ func (register RegisterController) Register(w http.ResponseWriter, r *http.Reque
 		_ = view.ExecuteTemplate(w, "RegisterPage", data)
 		return
 	}
-
+	// user- barlamak ucin
+	getUserEmail := userModel.GetUserEmail(registerInput.Email)
+	getUserUsername := userModel.GetUserUsername(registerInput.Username)
 	if getUserEmail || getUserUsername {
 		ErrorUserMessage := make(map[string]interface{})
 		if getUserEmail == true {

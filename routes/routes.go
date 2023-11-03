@@ -20,10 +20,11 @@ func Routes() *mux.Router {
 	// auth routes begin
 	// register routes
 	router.HandleFunc("/register", register.RegisterPage).Methods("GET")
-	router.HandleFunc("/register", register.Register).Methods("POST")
+	router.HandleFunc("/register", register.Register).Methods(http.MethodPost)
 
 	// login routes
 	router.HandleFunc("/login", login.LoginPage).Methods("GET")
+	router.HandleFunc("/login", login.Login).Methods(http.MethodPost)
 	//auth routes end
 
 	// web for routes
