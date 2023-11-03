@@ -1,0 +1,44 @@
+{{define "content"}}
+
+    <section class="mt-5 mb-5">
+        <div class="container h-custom ">
+            <form action="/user/posts/store" method="POST">
+                <div class="card">
+                    <div class="card-header">
+                        <b style="font-size: 18px;">Edit Post</b>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <label for="postTitle" class="form-label">Post Title</label>
+                            <input type="text" name="post_title" class="form-control rounded-0"  id="postTitle" >
+                        </div>
+                        <div class="mb-2">
+                            <label for="postDesc" class="form-label">Post Desc</label>
+                            <textarea rows="5" name="post_desc" class="form-control rounded-0"  id="postDesc" ></textarea>
+                        </div>
+
+                        <div class="mb-2">
+                            <label for="formFile" class="form-label" >Post Image</label>
+                            <input  name ="post_image" class="form-control rounded-0 " type="file" id="formFile" accept="image/*" onchange="loadFile(event)">
+                            <img class="mt-1" style="width:150px; height:130px;" id="output"/>
+                        </div>
+                        <div class="mb-2">
+                            <label for="postStatus" class="form-label">Post Status</label>
+                            <select name="post_status" class="form-select rounded-0" id="postStatus">
+                                <option value="">Status saýla</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        <button style="float: right;" class="btn btn-primary mb-2 ">Ýatda sakla</button>
+                    </div>
+            </form>
+        </div>
+        </div>
+    </section>
+
+{{end}}

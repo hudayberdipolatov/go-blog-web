@@ -1,0 +1,22 @@
+{{define "script"}}
+
+    <script src="/public/assets/bootstrap/js/bootstrap.min.js"  crossorigin="anonymous"></script>
+    <script src="/public/assets/font-awesome/js/all.min.js" crossorigin="anonymous" ></script>
+    <script src="/public/assets/jquery/jquery-3.5.1.min.js"  crossorigin="anonymous"></script>
+    <script src="/public/assets/summernote/summernote.min.js" crossorigin="anonymous" ></script>
+    <script src="/public/assets/jquery/popper.min.js" crossorigin="anonymous" ></script>
+    <script>
+        var output = document.getElementById('output');
+        output.style.display = "none";
+        var loadFile = function(event) {
+            var reader = new FileReader();
+            reader.onload = function(){
+                var output = document.getElementById('output');
+                output.style.display = "block";
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        };
+
+    </script>
+{{end}}

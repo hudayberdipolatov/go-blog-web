@@ -1,0 +1,99 @@
+{{define "content"}}
+
+    <section class="mt-5 mb-5">
+
+
+
+
+        <div class="container h-custom ">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="pill" href="#home"><b>Profile data</b></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="pill" href="#menu1"><b>Change Profile Data</b></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="pill" href="#menu2"><b>Change Password</b></a>
+                </li>
+            </ul>
+            <!-- Tab panes -->
+
+            <div class="tab-content">
+
+                <div id="home" class="container tab-pane active"><br>
+                    <h3 class="mt-2">Profile Data</h3>
+
+                    <div class="mt-4">
+                        <ul class="list-group rounded-0">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Full Name
+                                <span class=" text-black ">Hudayberdi Polatow</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                               Username
+                                <span >Polat</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Email
+                                <span >polatogly.2000@gmail.com</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="menu1" class="container tab-pane fade"><br>
+                    <h3 class="mt-2">Change Profile Data</h3>
+                    <form action="">
+                        <div class="card">
+
+                            <div class="card-body">
+                                <div class="mb-2">
+                                    <label for="fullName" class="form-label">Full Name</label>
+                                    <input type="text" name="full_name" class="form-control rounded-0"  id="fullName" >
+                                </div>
+                                <div class="mb-2">
+                                    <label for="username" class="form-label">Full Name</label>
+                                    <input type="text" name="username" class="form-control rounded-0"  id="username" >
+                                </div>
+
+                                <div class="mb-2">
+                                    <label for="email" class="form-label">Full Name</label>
+                                    <input type="email" name="email" class="form-control rounded-0"  id="email" >
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button style="float: right;" class="btn btn-primary mb-2 ">Ýatda sakla</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="menu2" class="container tab-pane fade"><br>
+                    <h3 class="mt-2">Change Password</h3>
+                    <form action="">
+                        <div class="card">
+
+                            <div class="card-body">
+                                <div class="mb-2">
+                                    <label for="old_password" class="form-label">Old Password</label>
+                                    <input type="password" name="old_password" placeholder="Old Password..." class="form-control rounded-0"  id="old_password" >
+                                </div>
+                                <div class="mb-2">
+                                    <label for="NewPassword" class="form-label">New Password </label>
+                                    <input type="password" name="password" placeholder="New Password.." class="form-control rounded-0"  id="NewPassword" >
+                                </div>
+                                <div class="mb-2">
+                                    <label for="password_confirm" class="form-label">New Password Confirm</label>
+                                    <input type="password" name="password_confirm"  placeholder="New Password Confirm.."  class="form-control rounded-0"  id="password_confirm" >
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button style="float: right;" class="btn btn-primary mb-2 ">Ýatda sakla</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{{end}}
