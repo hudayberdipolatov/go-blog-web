@@ -2,6 +2,7 @@ package userPostController
 
 import (
 	"github.com/hudayberdipolatov/go-blog-web/helpers"
+	"github.com/hudayberdipolatov/go-blog-web/helpers/authHelpers"
 	"html/template"
 	"log"
 	"net/http"
@@ -12,12 +13,20 @@ type UserPostController struct{}
 // List user Posts Page
 
 func (userPost UserPostController) ListUserPost(w http.ResponseWriter, r *http.Request) {
-	view, err := template.ParseFiles(helpers.Include("userData/userPosts/ListPost")...)
-	if err != nil {
-		log.Println(err)
-		return
+	session, _ := authHelpers.Store.Get(r, authHelpers.SESSION_ID)
+	if len(session.Values) == 0 {
+		view, _ := template.ParseFiles(helpers.Include("userData/userPosts/ListPost")...)
+		_ = view.ExecuteTemplate(w, "ListUserPost", nil)
+	} else {
+		data := map[string]interface{}{
+			"username": session.Values["Username"],
+			"FullName": session.Values["FullName"],
+			"Email":    session.Values["Email"],
+			"loggedIn": session.Values["loggedIn"],
+		}
+		view, _ := template.ParseFiles(helpers.Include("userData/userPosts/ListPost")...)
+		_ = view.ExecuteTemplate(w, "ListUserPost", data)
 	}
-	_ = view.ExecuteTemplate(w, "ListUserPost", nil)
 }
 
 // Create user Post page

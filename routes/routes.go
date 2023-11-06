@@ -7,11 +7,12 @@ import (
 	"github.com/hudayberdipolatov/go-blog-web/controllers/front/postController"
 	"github.com/hudayberdipolatov/go-blog-web/controllers/userData/userPostController"
 	"github.com/hudayberdipolatov/go-blog-web/controllers/userData/userProfileController"
+	"github.com/hudayberdipolatov/go-blog-web/helpers/authHelpers"
 	"net/http"
 )
 
 func Routes() *mux.Router {
-	router := mux.NewRouter()
+	router := mux.NewRouter().StrictSlash(true)
 	var login loginController.LoginController
 	var register registerController.RegisterController
 	var frontPosts postController.FrontPostController
@@ -21,28 +22,43 @@ func Routes() *mux.Router {
 	// register routes
 	router.HandleFunc("/register", register.RegisterPage).Methods("GET")
 	router.HandleFunc("/register", register.Register).Methods(http.MethodPost)
-
 	// login routes
 	router.HandleFunc("/login", login.LoginPage).Methods("GET")
 	router.HandleFunc("/login", login.Login).Methods(http.MethodPost)
+	router.HandleFunc("/logout", login.Logout).Methods(http.MethodPost)
 	//auth routes end
 
 	// web for routes
 	router.HandleFunc("/", frontPosts.ListPost)
 	// user data
 	// user profile data
-	router.HandleFunc("/user", userProfile.UserProfile).Methods("GET")
+	router.HandleFunc("/user", AuthMiddleware(userProfile.UserProfile)).Methods("GET")
 
 	// user posts
-	router.HandleFunc("/user/posts", userPost.ListUserPost).Methods("GET")
-	router.HandleFunc("/user/posts/create", userPost.CreateUserPost).Methods("GET")
-	router.HandleFunc("/user/posts/store", userPost.StoreUserPost).Methods("POST")
-	router.HandleFunc("/user/posts{post_id}/edit", userPost.EditUserPost).Methods("GET")
-	router.HandleFunc("/user/post/{post_id}/update", userPost.UpdateUserPost).Methods("PUT")
-	router.HandleFunc("/user/posts/{post_id}/delete", userPost.DeleteUserPost).Methods("DELETE")
+	router.HandleFunc("/user/posts", AuthMiddleware(userPost.ListUserPost)).Methods("GET")
+	router.HandleFunc("/user/posts/create", AuthMiddleware(userPost.CreateUserPost)).Methods("GET")
+	router.HandleFunc("/user/posts/store", AuthMiddleware(userPost.StoreUserPost)).Methods(http.MethodPost)
+	router.HandleFunc("/user/posts{post_id}/edit", AuthMiddleware(userPost.EditUserPost)).Methods("GET")
+	router.HandleFunc("/user/post/{post_id}/update", AuthMiddleware(userPost.UpdateUserPost)).Methods(http.MethodPut)
+	router.HandleFunc("/user/posts/{post_id}/delete", AuthMiddleware(userPost.DeleteUserPost)).Methods(http.MethodDelete)
 
 	// File server
 	fs := http.FileServer(http.Dir("./public/assets"))
 	router.PathPrefix("/public/assets/").Handler(http.StripPrefix("/public/assets", fs))
 	return router
+}
+
+func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		session, _ := authHelpers.Store.Get(r, authHelpers.SESSION_ID)
+		if len(session.Values) == 0 {
+			//log.Println("user no login")
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return
+		} else {
+			//log.Println("user login success")
+			next.ServeHTTP(w, r)
+			return
+		}
+	}
 }

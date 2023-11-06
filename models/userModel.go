@@ -10,15 +10,6 @@ type Users struct {
 	Password string
 }
 
-//
-//type UserInterface interface {
-//	GetAllUsers(where ...interface{}) []Users
-//	GetUser(where ...interface{}) Users
-//	CreateUser()
-//	UpdateUser(data Users)
-//	DeleteUser(where ...interface{})
-//}
-
 func (user Users) GetAllUsers(where ...interface{}) []Users {
 	var users []Users
 	DB.Find(&users, where...)
